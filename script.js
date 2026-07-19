@@ -1,3 +1,25 @@
+// 初期状態で最初のタブをアクティブにする
+window.onload = () => showTab('extractor', document.querySelector('.tabs button'));
+
+// タブ切り替えロジック
+function showTab(tabId, btnElement) {
+    // コンテンツの切り替え
+    document.querySelectorAll('.tab-content').forEach(el => el.style.display = 'none');
+    document.getElementById(tabId).style.display = 'block';
+
+    // もしボタン要素が渡されていれば、アクティブ状態の見た目を変える
+    if (btnElement) {
+        document.querySelectorAll('.tabs button').forEach(btn => btn.classList.remove('active'));
+        btnElement.classList.add('active');
+    }
+}
+
+// （HTML側で onclick="showTab('extractor', this)" と書かなくても動くようにイベントリスナーを追加）
+document.querySelectorAll('.tabs button')[0].addEventListener('click', function() { showTab('extractor', this); });
+document.querySelectorAll('.tabs button')[1].addEventListener('click', function() { showTab('viewer', this); });
+
+
+// ====== 1. ユーザー名抽出機能 ======
 document.getElementById('extractBtn').addEventListener('click', () => {
     const text = document.getElementById('inputText').value;
     const resultArea = document.getElementById('resultArea');
@@ -67,45 +89,59 @@ document.getElementById('extractBtn').addEventListener('click', () => {
 });
 
 
-// タブ切り替えロジック
-function showTab(tabId) {
-    document.querySelectorAll('.tab-content').forEach(el => el.style.display = 'none');
-    document.getElementById(tabId).style.display = 'block';
-}
-
-// カード生成ロジック
+// ====== 2. カード一覧生成機能 ======
 function generateCards() {
     const text = document.getElementById('discordText').value;
     const container = document.getElementById('cardContainer');
     container.innerHTML = '';
 
-    // Discordの1人分ずつの塊に分割（空行で区切られていると仮定）
-    const blocks = text.split(/\n\s*\n/);
+    // 【改善点】空行ではなく「名前：」または「名前:」の前で分割する
+    const blocks = text.split(/(?=名前[：:])/);
 
     blocks.forEach(block => {
         if (!block.trim()) return;
 
-        // Xのユーザー名を抽出
-        const match = block.match(/@([A-Za-z0-9_]{1,15})/);
+        // Xのユーザー名を抽出 (全角＠にも対応)
+        const match = block.match(/[@＠]([A-Za-z0-9_]{1,15})/);
         const username = match ? match[1] : null;
         
-        // 簡易パース：行ごとに「名前：〜」などをオブジェクト化
+        // パース処理
         const data = {};
         block.split('\n').forEach(line => {
             const parts = line.split(/：|:/);
-            if(parts.length > 1) data[parts[0].trim()] = parts[1].trim();
+            if(parts.length > 1) {
+                // キーと値の前後の空白を取り除いて保存
+                data[parts[0].trim()] = parts[1].trim();
+            }
         });
+
+        // 「名前」がないブロック（Discordの日付だけが入ったゴミデータなど）はスキップ
+        if (!data['名前']) return;
 
         // カード作成
         const card = document.createElement('div');
         card.className = 'profile-card';
+        
+        // アイコン画像（エラー時はグレーの丸を表示）
+        const imgTag = username 
+            ? `<img src="https://unavatar.io/twitter/${username}" onerror="this.src='data:image/svg+xml;charset=UTF-8,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2264%22 height=%2264%22 viewBox=%220 0 64 64%22%3E%3Crect width=%2264%22 height=%2264%22 fill=%22%23eff3f4%22/%3E%3C/svg%3E'">` 
+            : `<img src="data:image/svg+xml;charset=UTF-8,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2264%22 height=%2264%22 viewBox=%220 0 64 64%22%3E%3Crect width=%2264%22 height=%2264%22 fill=%22%23eff3f4%22/%3E%3C/svg%3E">`;
+
+        // ユーザー名のリンク生成
+        const twitterLink = username 
+            ? `<a href="https://x.com/${username}" target="_blank" style="color:#1d9bf0; text-decoration:none;">@${username}</a>` 
+            : '-';
+
         card.innerHTML = `
-            ${username ? `<img src="https://unavatar.io/twitter/${username}" onerror="this.src='default_icon.png'">` : ''}
-            <h3>${data['名前'] || '名前なし'}</h3>
+            ${imgTag}
+            <h3>${data['名前']}</h3>
             <p><strong>分野:</strong> ${data['分野'] || '-'}</p>
             <p><strong>資格:</strong> ${data['資格'] || '-'}</p>
-            <p><strong>X:</strong> ${username ? `@${username}` : '-'}</p>
+            <p><strong>X:</strong> ${twitterLink}</p>
         `;
         container.appendChild(card);
     });
 }
+
+// HTML側で onclick を書かなくても動くようにボタンにイベントを紐付け
+document.querySelector('#viewer button').addEventListener('click', generateCards);
