@@ -217,3 +217,35 @@ textarea:focus {
 .profile-card p strong {
     color: #0f1419;
 }
+
+/* h3のスタイルを上書きして、名前を横並びに */
+.profile-card h3 {
+    margin: 0 0 10px 0;
+    font-size: 1.2em;
+    color: #0f1419;
+    display: flex; /* 横並びにする */
+    align-items: baseline; /* 文字の下のラインを揃える */
+    gap: 8px; /* Xの名前とDiscordの名前の隙間 */
+    flex-wrap: wrap; /* 長い場合は折り返す */
+}
+
+/* 小さく表示するDiscordの名前のスタイルを追加 */
+.sub-name {
+    font-size: 0.75em;
+    color: #536471;
+    font-weight: normal;
+}
+
+/* 「一言」のスタイル（少し小さくして、上に区切り線を入れる） */
+.card-comment {
+    font-size: 0.8em !important; /* 少し小さめに */
+    color: #536471 !important;
+    margin-top: 12px !important;
+    padding-top: 12px;
+    border-top: 1px dashed #eff3f4; /* 視覚的に分かりやすいように点線を引く */
+    line-height: 1.4; /* 文章が2行以上になった時の見栄えを良くする */
+}
+
+.card-comment strong {
+    color: #0f1419;
+}

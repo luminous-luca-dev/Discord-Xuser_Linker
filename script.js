@@ -132,12 +132,19 @@ function generateCards() {
             ? `<a href="https://x.com/${username}" target="_blank" style="color:#1d9bf0; text-decoration:none;">@${username}</a>` 
             : '-';
 
+            // 「勉強していること」または「勉強中」のデータを取得
+            const study = data['勉強していること'] || data['勉強中'] || '-';
+
+            // 【追加】「一言」のデータを取得
+            const comment = data['一言'] || '-';
+
         card.innerHTML = `
             ${imgTag}
-            <h3>${data['名前']}</h3>
+            <h3>${data['名前']}<span class="sub-name">${twitterLink}</span></h3>
             <p><strong>分野:</strong> ${data['分野'] || '-'}</p>
             <p><strong>資格:</strong> ${data['資格'] || '-'}</p>
-            <p><strong>X:</strong> ${twitterLink}</p>
+            <p><strong>勉強中:</strong> ${study}</p>
+            <p class="card-comment"><strong>一言:</strong> ${comment}</p>
         `;
         container.appendChild(card);
     });
