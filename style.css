@@ -108,3 +108,112 @@ textarea:focus {
     color: #536471;
     padding: 20px 0;
 }
+
+/* タブの見た目 */
+.tab-content { padding: 20px; }
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 15px;
+    margin-top: 20px;
+}
+/* カードの見た目 */
+.profile-card {
+    border: 1px solid #ccc;
+    padding: 15px;
+    border-radius: 10px;
+    background: #fff;
+}
+.profile-card img {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+}
+
+/* タブボタンのスタイル */
+.tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    justify-content: center;
+}
+
+.tabs button {
+    padding: 10px 20px;
+    background-color: #eff3f4;
+    color: #0f1419;
+    border: none;
+    border-radius: 9999px;
+    font-size: 1em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+/* 選択中のタブ */
+.tabs button.active {
+    background-color: #1d9bf0;
+    color: #fff;
+}
+
+.tabs button:hover:not(.active) {
+    background-color: #d7dbdc;
+}
+
+/* カード作成ボタンのスタイル（抽出ボタンと統一） */
+#viewer button {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    background-color: #1d9bf0;
+    color: #fff;
+    border: none;
+    border-radius: 9999px;
+    font-size: 1.1em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    margin-bottom: 20px;
+}
+
+#viewer button:hover {
+    background-color: #1a8cd8;
+}
+
+/* プロフィールカードのデザインを少しリッチに */
+.profile-card {
+    border: 1px solid #eff3f4;
+    padding: 20px;
+    border-radius: 16px;
+    background: #fff;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.profile-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.profile-card img {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    margin-bottom: 10px;
+}
+
+.profile-card h3 {
+    margin: 0 0 10px 0;
+    font-size: 1.2em;
+    color: #0f1419;
+}
+
+.profile-card p {
+    margin: 5px 0;
+    font-size: 0.9em;
+    color: #536471;
+}
+
+.profile-card p strong {
+    color: #0f1419;
+}

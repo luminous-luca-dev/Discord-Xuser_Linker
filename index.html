@@ -7,14 +7,27 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
-        <h1>ユーザー名 抽出ツール</h1>
-        <p class="description">テキストを貼り付けると「@」から始まるユーザー名を一括抽出します。</p>
-        
-        <textarea id="inputText" placeholder="ここに複数の自己紹介テキストなどを貼り付けてください..."></textarea>
-        <button id="extractBtn">ユーザー名を抽出する</button>
-        
-        <div id="resultArea"></div>
+    <div class="tabs">
+        <button onclick="showTab('extractor')">抽出ツール</button>
+        <button onclick="showTab('viewer')">カード一覧表示</button>
+    </div>
+
+    <div id="extractor" class="tab-content">
+        <div class="container">
+            <h1>ユーザー名 抽出ツール</h1>
+            <p class="description">テキストを貼り付けると「@」から始まるユーザー名を一括抽出します。</p>
+            
+            <textarea id="inputText" placeholder="ここに複数の自己紹介テキストなどを貼り付けてください..."></textarea>
+            <button id="extractBtn">ユーザー名を抽出する</button>
+            
+            <div id="resultArea"></div>
+        </div>
+    </div>
+
+    <div id="viewer" class="tab-content" style="display:none;">
+        <textarea id="discordText" placeholder="Discordの自己紹介テキストを貼り付け"></textarea>
+        <button onclick="generateCards()">カードを作成する</button>
+        <div id="cardContainer" class="card-grid"></div>
     </div>
 
     <script src="script.js"></script>
